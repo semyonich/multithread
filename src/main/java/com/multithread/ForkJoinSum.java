@@ -20,7 +20,7 @@ public class ForkJoinSum extends RecursiveTask<Long> {
             return ForkJoinTask.invokeAll(createSubtasks())
                     .stream()
                     .mapToLong(ForkJoinTask::join)
-                    .sum();
+                    .reduce(0, Long::sum);
         } else {
             return processing(intList);
         }
@@ -36,6 +36,6 @@ public class ForkJoinSum extends RecursiveTask<Long> {
     private Long processing(List<Integer> list) {
         return list.stream()
                 .mapToLong(i -> i)
-                .sum();
+                .reduce(0, Long::sum);
     }
 }

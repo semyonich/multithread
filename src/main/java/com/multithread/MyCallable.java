@@ -14,6 +14,6 @@ public class MyCallable implements Callable<Long> {
     public Long call() throws Exception {
         return intList.stream()
                 .mapToLong(i -> i)
-                .sum();
+                .reduce(0, Long::sum);
     }
 }
