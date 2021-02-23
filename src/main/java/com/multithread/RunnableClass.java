@@ -22,11 +22,4 @@ public class RunnableClass implements Runnable {
         }
         logger.info("Runnable finished!");
     }
-
-    public void start() {
-        if (thread == null) {
-            thread = new Thread(this);
-            thread.start();
-        }
-    }
 }
