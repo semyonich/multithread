@@ -1,5 +1,5 @@
 import com.multithread.ForkJoinSum;
-import com.multithread.Util;
+import com.multithread.ListProducer;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -9,14 +9,34 @@ public class ForkJoinSumTest {
     private static final int MAX_LIST_VALUE = 1;
 
     @Test
-    void getSum_Ok() {
-        List<Integer> firstList = Util.getIntList(NUMBER_OF_VALUES, MAX_LIST_VALUE);
-        ForkJoinSum forkJoinSum = new ForkJoinSum(firstList);
-        Long actual1 = forkJoinSum.compute();
-        Assertions.assertEquals(1000_000, actual1);
-        List<Integer> secondList = List.of(20, 30, 40, 50, 60, 70, 80, 90, 100);
-        forkJoinSum = new ForkJoinSum(secondList);
-        Long actual2 = forkJoinSum.compute();
-        Assertions.assertEquals(540, actual2);
+    void getSumLargeArray_Ok() {
+        List<Long> testList = ListProducer.getLongList(NUMBER_OF_VALUES, MAX_LIST_VALUE);
+        ForkJoinSum forkJoinSum = new ForkJoinSum(testList);
+        Long actual = forkJoinSum.compute();
+        Assertions.assertEquals(1000_000, actual);
+    }
+
+    @Test
+    void getSumPositiveElements_ok() {
+        List<Long> testList = List.of(20L, 30L, 40L, 50L, 60L, 70L, 80L, 90L, 100L);
+        ForkJoinSum forkJoinSum = new ForkJoinSum(testList);
+        Long actual = forkJoinSum.compute();
+        Assertions.assertEquals(540, actual);
+    }
+
+    @Test
+    void getSumNegativeElements_ok() {
+        List<Long> testList = List.of(-20L, -30L, -40L, -50L, -60L, -70L, -80L, -90L, -100L);
+        ForkJoinSum forkJoinSum = new ForkJoinSum(testList);
+        Long actual = forkJoinSum.compute();
+        Assertions.assertEquals(-540, actual);
+    }
+
+    @Test
+    void getSumDifferentElements_ok() {
+        List<Long> testList = List.of(-20L, 30L, -40L, 50L, -60L, 70L, -80L, 90L, -100L);
+        ForkJoinSum forkJoinSum = new ForkJoinSum(testList);
+        Long actual = forkJoinSum.compute();
+        Assertions.assertEquals(-60, actual);
     }
 }

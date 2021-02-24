@@ -2,25 +2,24 @@ package com.multithread;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import org.apache.commons.collections4.ListUtils;
 
 public class ExecutorServiceSum {
     private int numberOfThreads;
-    private List<Integer> intList;
+    private List<Long> longList;
 
     public Long calculateSum() {
-        int partitionListLength = intList.size() / numberOfThreads;
         ExecutorService executor = Executors.newFixedThreadPool(numberOfThreads);
-        List<MyCallable> callableTasks = new ArrayList<>();
-        for (int i = 0; i < numberOfThreads; i++) {
-            callableTasks.add(new MyCallable(intList.subList(i * partitionListLength,
-                    (i + 1) * partitionListLength)));
+        List<Callable<Long>> callableTasks = new ArrayList<>();
+        List<List<Long>> subSets = ListUtils.partition(longList, numberOfThreads);
+        for (List<Long> item : subSets) {
+            callableTasks.add(new ListSumCalculator(item));
         }
-        callableTasks.add(new MyCallable(intList.subList(intList.size()
-                    - intList.size() % partitionListLength, intList.size())));
         List<Future<Long>> futures = null;
         try {
             futures = executor.invokeAll(callableTasks);
@@ -39,7 +38,7 @@ public class ExecutorServiceSum {
         this.numberOfThreads = numberOfThreads;
     }
 
-    public void setIntList(List<Integer> intList) {
-        this.intList = intList;
+    public void setLongList(List<Long> longList) {
+        this.longList = longList;
     }
 }
