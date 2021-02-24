@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 
 public class ExecutorServiceSumTest {
     private static ExecutorServiceSum executorServiceSum;
-    private static final int THREADS_NUMBER_1 = 10;
+    private static final int THREADS_NUMBER_1 = 7;
     private static final int THREADS_NUMBER_2 = 4;
     private static final int NUMBER_OF_VALUES = 1000_000;
     private static final int MAX_LIST_VALUE = 1;

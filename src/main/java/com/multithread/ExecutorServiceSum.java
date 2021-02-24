@@ -19,10 +19,8 @@ public class ExecutorServiceSum {
             callableTasks.add(new MyCallable(intList.subList(i * partitionListLength,
                     (i + 1) * partitionListLength)));
         }
-        if (intList.size() % partitionListLength != 0) {
-            callableTasks.add(new MyCallable(intList.subList(intList.size()
+        callableTasks.add(new MyCallable(intList.subList(intList.size()
                     - intList.size() % partitionListLength, intList.size())));
-        }
         List<Future<Long>> futures = null;
         try {
             futures = executor.invokeAll(callableTasks);
